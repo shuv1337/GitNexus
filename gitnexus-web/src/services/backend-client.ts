@@ -190,7 +190,7 @@ export function streamSSE<T = unknown>(url: string, handlers: SSEHandlers<T>): A
 
 // ── Configuration ──────────────────────────────────────────────────────────
 
-let _backendUrl = 'http://localhost:4747';
+let _backendUrl = 'http://shuvdev:4848';
 
 export const setBackendUrl = (url: string): void => {
   _backendUrl = url.replace(/\/$/, '');
