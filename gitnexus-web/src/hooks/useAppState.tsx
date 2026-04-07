@@ -529,10 +529,18 @@ const AppStateProviderInner = ({ children }: { children: ReactNode }) => {
       setEmbeddingStatus('idle');
       return;
     }
+
+    // Avoid competing with agent/context initialization on first load.
+    // The backend can stall query requests while an embed/analyze job is active,
+    // so only auto-start embeddings once the agent bootstrap has settled.
+    if (isAgentInitializing) {
+      return;
+    }
+
     startEmbeddings().catch((err) => {
       console.warn('Embeddings auto-start failed:', err);
     });
-  }, [startEmbeddings]);
+  }, [isAgentInitializing, startEmbeddings]);
 
   const semanticSearch = useCallback(async (query: string, k: number = 10): Promise<any[]> => {
     return backendSearch(query, { limit: k, mode: 'semantic', repo: repoRef.current });

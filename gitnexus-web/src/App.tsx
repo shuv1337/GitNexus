@@ -79,15 +79,20 @@ const AppContent = () => {
       // Transition directly to exploring view
       setViewMode('exploring');
 
-      // Initialize agent with backend queries, then start embeddings
+      // Initialize agent with backend queries first.
+      // Delay embeddings auto-start slightly so context-builder queries complete
+      // before the backend begins a long-running embed/analyze job.
       try {
         if (getActiveProviderConfig()) {
           await initializeAgent(projectName);
         }
-        startEmbeddingsWithFallback();
       } catch (err) {
         console.warn('Failed to initialize agent:', err);
       }
+
+      window.setTimeout(() => {
+        startEmbeddingsWithFallback();
+      }, 1000);
     },
     [
       setViewMode,
