@@ -105,6 +105,55 @@ Then re-run `npx gitnexus analyze` (and `--embeddings` if you need vectors).
 
 ## Local bridge for the web UI
 
+### Docker Compose (preferred for actual long-running local use)
+
+A Compose stack is included at the repo root and runs:
+- `gitnexus-backend` → `gitnexus serve` on `http://127.0.0.1:4747`
+- `gitnexus-web` → static web UI on `http://127.0.0.1:38080`
+
+Start the stack from the repo root:
+
+```bash
+npm run compose:up
+```
+
+Equivalent raw command:
+
+```bash
+docker compose up -d --build
+```
+
+Or choose custom host ports if the defaults are busy:
+
+```bash
+GITNEXUS_BACKEND_PORT=4748 GITNEXUS_WEB_PORT=8081 docker compose up -d --build
+```
+
+Open the local UI with the backend preselected:
+
+```text
+http://127.0.0.1:38080/?server=http://127.0.0.1:4747
+```
+
+With custom ports:
+
+```text
+http://127.0.0.1:8081/?server=http://127.0.0.1:4748
+```
+
+Notes:
+- The images build cleanly from the repo source; no host-side prebuild is required.
+- The backend container serves against the host GitNexus home at `~/.gitnexus` and host repo paths via bind mount, so existing indexed repos remain visible in the web UI.
+- Compose no longer auto-analyzes `/workspace` on startup; use `gitnexus analyze` explicitly when you want to index or refresh a repo.
+- If you change the host home bind or `GITNEXUS_HOME`, verify the container still sees the same absolute repo paths recorded in `~/.gitnexus/registry.json`, or multi-repo listings may appear empty.
+- To stop the stack: `npm run compose:down`
+- To inspect the stack: `npm run compose:ps` / `npm run compose:logs`
+- To rebuild after code changes: `npm run compose:up`
+
+### Direct backend run (debugging only)
+
+Use this when debugging the backend in isolation or when you explicitly do not want Compose:
+
 ```bash
 cd gitnexus
 npx gitnexus serve

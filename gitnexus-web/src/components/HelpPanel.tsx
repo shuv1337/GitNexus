@@ -702,14 +702,6 @@ export const HelpPanel = ({ isOpen, onClose, nodeCount, edgeCount }: HelpPanelPr
           <span style={{ fontSize: 11, color: '#4b5563' }}>
             GitNexus — open source codebase graph explorer
           </span>
-          <a
-            href="https://github.com/abhigyanpatwari/GitNexus"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontSize: 11, color: '#a78bfa', textDecoration: 'none' }}
-          >
-            Docs & GitHub ↗
-          </a>
         </div>
       </div>
     </div>

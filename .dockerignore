@@ -1,0 +1,15 @@
+.git
+.gitnexus
+.history
+node_modules
+**/node_modules
+**/dist
+*.tsbuildinfo
+**/*.tsbuildinfo
+**/.vite
+**/coverage
+**/playwright-report
+**/test-results
+**/.DS_Store
+Dockerfile*
+.gitignore

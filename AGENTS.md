@@ -63,7 +63,7 @@ Generic “core standards” playbooks are often long and stack-specific. For th
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **GitNexus** (3298 symbols, 7954 relationships, 185 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **gitnexus** (3907 symbols, 9056 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 
@@ -79,7 +79,7 @@ This project is indexed by GitNexus as **GitNexus** (3298 symbols, 7954 relation
 
 1. `gitnexus_query({query: "<error or symptom>"})` — find execution flows related to the issue
 2. `gitnexus_context({name: "<suspect function>"})` — see all callers, callees, and process participation
-3. `READ gitnexus://repo/GitNexus/process/{processName}` — trace the full execution flow step by step
+3. `READ gitnexus://repo/gitnexus/process/{processName}` — trace the full execution flow step by step
 4. For regressions: `gitnexus_detect_changes({scope: "compare", base_ref: "main"})` — see what your branch changed
 
 ## When Refactoring
@@ -118,10 +118,10 @@ This project is indexed by GitNexus as **GitNexus** (3298 symbols, 7954 relation
 
 | Resource | Use for |
 |----------|---------|
-| `gitnexus://repo/GitNexus/context` | Codebase overview, check index freshness |
-| `gitnexus://repo/GitNexus/clusters` | All functional areas |
-| `gitnexus://repo/GitNexus/processes` | All execution flows |
-| `gitnexus://repo/GitNexus/process/{name}` | Step-by-step execution trace |
+| `gitnexus://repo/gitnexus/context` | Codebase overview, check index freshness |
+| `gitnexus://repo/gitnexus/clusters` | All functional areas |
+| `gitnexus://repo/gitnexus/processes` | All execution flows |
+| `gitnexus://repo/gitnexus/process/{name}` | Step-by-step execution trace |
 
 ## Self-Check Before Finishing
 
@@ -178,9 +178,10 @@ This is a monorepo with two main products and supporting config packages:
 
 ### Running services
 
-- **CLI/Core**: `cd gitnexus && npm run dev` (tsx watch mode) or `npm run build && node dist/cli/index.js <command>`
-- **Web UI**: `cd gitnexus-web && npm run dev` (Vite on port 5173)
-- **Backend mode**: `cd <indexed-repo> && node /workspace/gitnexus/dist/cli/index.js serve` (HTTP API on port 3741 by default)
+- **Preferred local stack**: `npm run compose:up` from repo root starts the backend on `4747` and a static web UI on `38080` by default; override with `GITNEXUS_BACKEND_PORT` / `GITNEXUS_WEB_PORT` if those ports are busy
+- **CLI/Core dev**: `cd gitnexus && npm run dev` (tsx watch mode) or `npm run build && node dist/cli/index.js <command>`
+- **Web UI dev**: `cd gitnexus-web && npm run dev` (Vite dev server, typically port 5173 unless Vite selects another free port)
+- **Direct backend mode**: `cd gitnexus && node dist/cli/index.js serve` (HTTP API on port 4747 by default; mainly for debugging or non-Compose workflows)
 
 ### Testing
 

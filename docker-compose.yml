@@ -1,0 +1,30 @@
+services:
+  gitnexus-backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    container_name: gitnexus-backend
+    working_dir: /workspace
+    command: >-
+      sh -lc
+      "exec node /app/gitnexus/dist/cli/index.js serve --host 0.0.0.0 --port 4747"
+    environment:
+      HOME: /home/shuv
+      GITNEXUS_HOME: /home/shuv/.gitnexus
+    volumes:
+      - .:/workspace
+      - /home/shuv:/home/shuv
+    ports:
+      - '${GITNEXUS_BACKEND_PORT:-4747}:4747'
+    restart: unless-stopped
+
+  gitnexus-web:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+    container_name: gitnexus-web
+    depends_on:
+      - gitnexus-backend
+    ports:
+      - '${GITNEXUS_WEB_PORT:-38080}:80'
+    restart: unless-stopped

@@ -326,7 +326,35 @@ A fully client-side graph explorer and AI chat. No server, no install — your c
 
 <img width="2550" height="1343" alt="gitnexus_img" src="https://github.com/user-attachments/assets/cc5d637d-e0e5-48e6-93ff-5bcfdb929285" />
 
-Or run locally:
+### Recommended local stack (self-hosted)
+
+For actual day-to-day local use of your fork, run the backend and self-hosted web UI with Docker Compose from the repo root:
+
+```bash
+npm run compose:up
+```
+
+If the default ports are busy, override them:
+
+```bash
+GITNEXUS_BACKEND_PORT=4748 GITNEXUS_WEB_PORT=8081 npm run compose:up
+```
+
+Then open the self-hosted UI with the backend preselected:
+
+```text
+http://127.0.0.1:38080/?server=http://127.0.0.1:4747
+```
+
+Or with custom ports:
+
+```text
+http://127.0.0.1:8081/?server=http://127.0.0.1:4748
+```
+
+### Frontend development mode
+
+If you're actively modifying the web UI, use the Vite dev server for HMR:
 
 ```bash
 git clone https://github.com/abhigyanpatwari/gitnexus.git
@@ -335,9 +363,11 @@ cd ../gitnexus-web && npm install
 npm run dev
 ```
 
+Keep the backend running separately via Docker Compose or `gitnexus serve`.
+
 The web UI uses the same indexing pipeline as the CLI but runs entirely in WebAssembly (Tree-sitter WASM, LadybugDB WASM, in-browser embeddings). It's great for quick exploration but limited by browser memory for larger repos.
 
-**Local Backend Mode:** Run `gitnexus serve` and open the web UI locally — it auto-detects the server and shows all your indexed repos, with full AI chat support. No need to re-upload or re-index. The agent's tools (Cypher queries, search, code navigation) route through the backend HTTP API automatically.
+**Local Backend Mode:** For debugging or lightweight manual runs, `gitnexus serve` still works directly, but Docker Compose is the recommended steady-state local runtime. The web UI auto-detects the local server and shows all your indexed repos, with full AI chat support. No need to re-upload or re-index. The agent's tools (Cypher queries, search, code navigation) route through the backend HTTP API automatically.
 
 ---
 
